@@ -4,7 +4,7 @@
   "description": "A CLI tool for React Native project release management",
   "main": "index.js",
   "bin": {
-    "rn-hanafe": "./index.js"
+    "rn-release": "./index.js"
   },
   "type": "module",
   "scripts": {
