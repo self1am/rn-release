@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Set up the program
-const program = new Command("rn-hanafe")
+const program = new Command("rn-release")
   .version("1.0.0")
   .description("A CLI tool for React Native project release management");
 

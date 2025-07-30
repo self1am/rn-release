@@ -1,6 +1,6 @@
-<!-- # rn-hanafe
+<!-- # @hanafe/rn-release
 
-`rn-hanafe` is a CLI tool for managing releases of React Native projects. It helps with versioning, building, and deploying your app for both Android and iOS platforms.
+`@hanafe/rn-release` is a CLI tool for managing releases of React Native projects. It helps with versioning, building, and deploying your app for both Android and iOS platforms.
 
 ## Features
 
@@ -17,20 +17,20 @@
 Install the CLI globally using npm:
 
 ```bash
-npm install -g rn-hanafe
+npm install -g @hanafe/rn-release
 ```
 
 ## Usage
 Run the CLI using the command:
 ```bash
-rn-hanafe <command> [options]
+@hanafe/rn-release <command> [options]
 ```
 
 ### Commands
 Prepare and build a new release for your React Native project.
 
 ```bash 
-rn-hanafe release [options]
+@hanafe/rn-release release [options]
 ```
 
 #### Options:
@@ -40,16 +40,18 @@ rn-hanafe release [options]
 
 ### Example:
 ```bash
-rn-hanafe release -v minor -p android
+@hanafe/rn-release release -v minor -p android
 ```
 
 stream-install -->
 
-# rn-hanafe
+# @hanafe/rn-release
 
-`rn-hanafe` is a CLI tool for managing releases of React Native projects. It helps with versioning, building, and deploying your app for both Android and iOS platforms.
+`@hanafe/rn-release` is a CLI tool for managing releases of React Native projects. It helps with versioning, building, and deploying your app for both Android and iOS platforms.
 
 `This is a basic tool. More functionalities are to be added soon. For contribution contact me at miraahanafee@gmail.com`
+
+`NOTE: A previous version of this same package named rn-hanafe is now deprecated`
 
 ## Features
 
@@ -66,7 +68,7 @@ stream-install -->
 Install the CLI globally using npm:
 
 ```bash
-npm install -g rn-hanafe
+npm install -g @hanafe/rn-release
 ```
 
 ## Usage
@@ -74,7 +76,7 @@ npm install -g rn-hanafe
 Run the CLI using the command:
 
 ```bash
-rn-hanafe <command> [options]
+@hanafe/rn-release <command> [options]
 ```
 
 ### Commands
@@ -88,7 +90,7 @@ release
 Prepare and build a new release for your React Native project.
 
 ```bash
-rn-hanafe release [options]
+@hanafe/rn-release release [options]
 ```
 
 ##### Options:
@@ -98,7 +100,7 @@ rn-hanafe release [options]
 
 ##### Example:
 ```bash
-rn-hanafe release -v minor -p android
+@hanafe/rn-release release -v minor -p android
 ```
 
 #### `stream-install`
@@ -106,7 +108,7 @@ rn-hanafe release -v minor -p android
 Stream-install an APK to multiple connected Android devices via ADB.
 
 ```bash
-rn-hanafe stream-install
+@hanafe/rn-release stream-install
 ```
 
 This command detects connected Android devices and installs the release APK (`android/app/build/outputs/apk/release/app-release.apk`) on selected devices.
@@ -116,7 +118,7 @@ This command detects connected Android devices and installs the release APK (`an
 Initialize project settings (functionality to be implemented).
 
 ```bash
-rn-hanafe init
+@hanafe/rn-release init
 ```
 
 ### Interactive Mode
@@ -139,7 +141,7 @@ release
 
  command:
    ```bash
-   rn-hanafe release
+   @hanafe/rn-release release
    ```
 3. Follow the prompts to update the version, build the app, and create a Git tag.
 

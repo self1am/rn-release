@@ -1,6 +1,6 @@
 {
-  "name": "rn-hanafe",
-  "version": "1.0.2",
+  "name": "@hanafe/rn-release",
+  "version": "1.0.0",
   "description": "A CLI tool for React Native project release management",
   "main": "index.js",
   "bin": {
