@@ -217,17 +217,79 @@ function gitCommitAndTag(version) {
 //   }
 // }
 
+// function buildAndroid() {
+//   try {
+//     console.log(chalk.blue("Building Android release..."));
+
+//     // Use the correct gradle command based on the OS
+//     const gradleCmd =
+//       process.platform === "win32" ? "gradlew.bat" : "./gradlew";
+
+//     execSync(`cd android && ${gradleCmd} assembleRelease`, {
+//       stdio: "inherit",
+//     });
+
+//     console.log(chalk.green("✅ Android build completed successfully!"));
+
+//     const apkPath = path.join(
+//       process.cwd(),
+//       "android",
+//       "app",
+//       "build",
+//       "outputs",
+//       "apk",
+//       "release"
+//     );
+//     console.log(chalk.green(`📦 APK file location: ${apkPath}`));
+//   } catch (error) {
+//     console.error(chalk.red(`❌ Android build failed: ${error.message}`));
+//   }
+// }
+
 function buildAndroid() {
   try {
     console.log(chalk.blue("Building Android release..."));
 
-    // Use the correct gradle command based on the OS
-    const gradleCmd =
-      process.platform === "win32" ? "gradlew.bat" : "./gradlew";
+    // Step 1: Clean Metro cache and stop any running processes
+    console.log(chalk.blue("🧹 Cleaning Metro cache..."));
+    try {
+      execSync("npx react-native start --reset-cache", { 
+        stdio: "pipe", // Use pipe to suppress output unless there's an error
+        timeout: 30000 // 30 second timeout
+      });
+    } catch (error) {
+      // Metro cache reset might fail if metro isn't installed globally, but that's ok
+      console.log(chalk.yellow("⚠️ Metro cache reset skipped"));
+    }
 
-    execSync(`cd android && ${gradleCmd} assembleRelease`, {
+    // Step 2: Clean Android build directory
+    console.log(chalk.blue("🧹 Cleaning Android build..."));
+    const androidDir = path.join(process.cwd(), "android");
+    
+    if (!fs.existsSync(androidDir)) {
+      console.error(chalk.red("❌ Android directory not found"));
+      return;
+    }
+
+    // Change to android directory and run clean
+    process.chdir(androidDir);
+    
+    const gradleCmd = process.platform === "win32" ? "gradlew.bat" : "./gradlew";
+    
+    // Clean first
+    execSync(`${gradleCmd} clean`, {
       stdio: "inherit",
     });
+
+    console.log(chalk.blue("🏗️ Building release APK..."));
+    
+    // Build the release
+    execSync(`${gradleCmd} assembleRelease --no-daemon`, {
+      stdio: "inherit",
+    });
+
+    // Change back to project root
+    process.chdir("..");
 
     console.log(chalk.green("✅ Android build completed successfully!"));
 
@@ -242,7 +304,20 @@ function buildAndroid() {
     );
     console.log(chalk.green(`📦 APK file location: ${apkPath}`));
   } catch (error) {
+    // Make sure we're back in the project root
+    try {
+      process.chdir(path.dirname(process.cwd().includes('android') ? process.cwd() + '/..' : process.cwd()));
+    } catch (e) {
+      // Ignore chdir errors in cleanup
+    }
+    
     console.error(chalk.red(`❌ Android build failed: ${error.message}`));
+    
+    // Additional troubleshooting info
+    console.log(chalk.yellow("\n🔧 Troubleshooting tips:"));
+    console.log(chalk.yellow("1. Try running: cd android && ./gradlew clean"));
+    console.log(chalk.yellow("2. Delete node_modules and reinstall dependencies"));
+    console.log(chalk.yellow("3. Check if any Metro processes are running: pkill -f metro"));
   }
 }
 
