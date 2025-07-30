@@ -17,7 +17,7 @@
     "build",
     "version"
   ],
-  "author": "Your Name",
+  "author": "Hanafe Mira",
   "license": "MIT",
   "dependencies": {
     "chalk": "^5.2.0",
