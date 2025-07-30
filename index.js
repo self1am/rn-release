@@ -292,8 +292,9 @@ function buildIos() {
 
 // Release command function
 async function release(options) {
-  console.log(chalk.blue("🚀 React Native Hanafe Release Tool"));
+  console.log(chalk.blue("🚀 React Native Release Tool"));
   console.log(chalk.blue("================================"));
+  console.log(chalk.blue("@hanafe/rn-release v1.0.1"));
 
   const packageJson = getPackageJson();
   const currentVersion = packageJson.version || "0.1.0";
@@ -482,15 +483,39 @@ async function streamInstallApk() {
     return;
   }
 
-  const apkPath = "android/app/build/outputs/apk/release/app-release.apk";
-  //   const { apkPath } = await inquirer.prompt([
-  //     {
-  //       type: "input",
-  //       name: "apkPath",
-  //       message: "Enter the path to the release APK:",
-  //       validate: (input) => (input ? true : "APK path cannot be empty!"),
-  //     },
-  //   ]);
+  // Find available APKs in the release directory
+  const releaseDir = path.join(process.cwd(), 'android/app/build/outputs/apk/release');
+  const apkFiles = fs.readdirSync(releaseDir)
+    .filter(file => file.endsWith('.apk'))
+    .map(file => ({
+      name: file,
+      path: path.join(releaseDir, file)
+    }));
+
+  if (apkFiles.length === 0) {
+    console.error(chalk.red('No APK files found in the release directory'));
+    return;
+  }
+
+  // If there's only one APK, use it directly
+  let selectedApk;
+  if (apkFiles.length === 1) {
+    selectedApk = apkFiles[0];
+  } else {
+    // Let user select which APK to install
+    const { apkChoice } = await inquirer.prompt([{
+      type: 'list',
+      name: 'apkChoice',
+      message: 'Multiple APKs found. Select which one to install:',
+      choices: apkFiles.map(apk => ({
+        name: apk.name,
+        value: apk
+      }))
+    }]);
+    selectedApk = apkChoice;
+  }
+
+  const apkPath = selectedApk.path;
 
   console.log("🚀 Installing APK on selected devices...");
   selectedDevices.forEach((device) => {
